@@ -1,0 +1,23 @@
+DRY|Dry|asd|asd|51|42
+MED|Mediums|asd|ef|12|12
+SHA|Shade|sad|ads|43|12
+BAS|Base|AquaPrime|Imprimación azul clara|30|120
+LAY|Layer|SunsetOrange|Naranja para capas cálidas|19|150
+SHA|Shade|DeepShadow|Sombra profunda para contrastes|25|140
+DRY|Dry|SandDust|Tono arenoso para pincel seco|51|42
+CON|Contrast|BloodRed|Rojo intenso para contrastes|60|190
+TEC|Technical|RustEffect|Efecto oxidado realista|15|200
+TEX|Texture|MudTexture|Textura de barro espeso|18|230
+MED|Mediums|FlowAid|Aditivo para fluidez|50|110
+BAS|Base|StoneGrey|Gris piedra de alta opacidad|27|115
+LAY|Layer|SkyBlue|Azul cielo suave|36|135
+SHA|Shade|NightWash|Lavado oscuro nocturno|22|145
+DRY|Dry|BoneDust|Blanco hueso para drybrush|5|60
+CON|Contrast|JungleGreen|Verde selva vibrante|44|185
+TEC|Technical|CrackleMedium|Medio para craquelar|10|260
+TEX|Texture|SandPaste|Pasta arenosa fina|17|240
+MED|Mediums|GlazeMedium|Medio para veladuras|33|130
+BAS|Base|DarkMetal|Metal oscuro base|20|125
+LAY|Layer|CopperLight|Cobre claro metálico|28|155
+SHA|Shade|RustShade|Sombras de óxido|19|150
+DRY|Dry|AshGrey|Gris ceniza para detalles rápidos|35|55
