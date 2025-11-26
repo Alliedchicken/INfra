@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  redis:
+    image: redis:7-alpine
+    hostname: redis
+    container_name: redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    networks:
+      - infra-net
+
+  web:
+    build:
+      context: ./web
+    image: web-app:latest
+    hostname: web
+    depends_on:
+      - redis
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - infra-net
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    image: project-nginx:latest
+    hostname: nginx
+    container_name: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - web
+    restart: unless-stopped
+    networks:
+      - infra-net
+
+volumes:
+  redis-data:
+    name: bd
+
+networks:
+  infra-net:
+    name: infra-net
+    driver: bridge
