@@ -1,13 +1,3 @@
-#!/usr/bin/env bash
-
-###############################################################################
-# Sistema de inventario para pinturas Citadel.
-# Requisitos clave:
-#   - Gestión de usuarios (alta, cambio de contraseña, login y logout).
-#   - Administración de stock (alta, venta, filtro y reporte CSV).
-#   - Persistencia en archivos de texto junto al script.
-###############################################################################
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 USERS_FILE="$SCRIPT_DIR/usuarios.db"
 PRODUCTS_FILE="$SCRIPT_DIR/productos.db"
