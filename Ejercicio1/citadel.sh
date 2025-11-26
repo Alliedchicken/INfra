@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 DIRECTORIO_BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 ARCHIVO_USUARIOS="$DIRECTORIO_BASE/usuarios.db"
@@ -8,7 +8,6 @@ ARCHIVO_CSV="$CARPETA_DATOS/datos.CSV"
 
 USUARIO_ACTUAL=""
 
-# Tipos de pintura válidos (según enunciado)
 TIPOS_VALIDOS=(
   "Base"
   "Layer"
@@ -20,33 +19,24 @@ TIPOS_VALIDOS=(
   "Mediums"
 )
 
-# --------------------------------------------------------------
-#  Funciones generales de utilidad
-# --------------------------------------------------------------
 
 pausar() {
   printf "Presione Enter para continuar..." >&2
   read -r
 }
 
-# Asegura que existan archivos de usuarios y productos,
-# y que el usuario admin:admin esté presente.
 asegurar_almacenamiento() {
-  # Archivo de usuarios
   if [[ ! -f "$ARCHIVO_USUARIOS" ]]; then
     printf "admin:admin\n" >"$ARCHIVO_USUARIOS"
   fi
 
-  # Asegurar que admin exista siempre
   if ! awk -F':' '$1=="admin"{found=1} END{exit found?0:1}' "$ARCHIVO_USUARIOS" >/dev/null 2>&1; then
     printf "admin:admin\n" >>"$ARCHIVO_USUARIOS"
   fi
 
-  # Archivo de productos (vacío si no existe)
   [[ -f "$ARCHIVO_PRODUCTOS" ]] || : >"$ARCHIVO_PRODUCTOS"
 }
 
-# Requiere que haya un usuario logueado para continuar.
 requerir_sesion() {
   if [[ -z "$USUARIO_ACTUAL" ]]; then
     echo "Debe iniciar sesión para usar esta opción."
@@ -56,7 +46,6 @@ requerir_sesion() {
   return 0
 }
 
-# Elimina espacios en blanco al inicio y al final
 recortar() {
   local texto="$1"
   texto="${texto#"${texto%%[![:space:]]*}"}"
@@ -64,7 +53,6 @@ recortar() {
   printf "%s" "$texto"
 }
 
-# Pide un valor por teclado que no puede ser vacío
 pedir_no_vacio() {
   local mensaje="$1"
   local entrada
@@ -79,7 +67,6 @@ pedir_no_vacio() {
   done
 }
 
-# Pide contraseña no vacía con confirmación
 pedir_contrasenia() {
   local mensaje="$1"
   local pass confirm
@@ -102,7 +89,6 @@ pedir_contrasenia() {
   done
 }
 
-# Pide un entero positivo (> 0)
 pedir_entero_positivo() {
   local mensaje="$1"
   local valor
@@ -117,9 +103,6 @@ pedir_entero_positivo() {
   done
 }
 
-# --------------------------------------------------------------
-#  Manejo de usuarios
-# --------------------------------------------------------------
 
 existe_usuario() {
   local usuario="$1"
@@ -156,7 +139,6 @@ crear_usuario() {
 
   nuevo_pass="$(pedir_contrasenia 'Ingrese contraseña: ')"
 
-  # Sanitizar por si hubiera CR/LF embebidos
   nuevo_pass="${nuevo_pass//$'\r'/}"
   nuevo_pass="${nuevo_pass//$'\n'/}"
 
@@ -173,7 +155,6 @@ cambiar_contrasenia() {
   echo "=== Cambiar contraseña ==="
   local objetivo="$USUARIO_ACTUAL"
 
-  # Si es admin, puede cambiar la contraseña de otro usuario
   if [[ "$USUARIO_ACTUAL" == "admin" ]]; then
     local entrada
     read -r -p "Usuario a modificar (Enter para 'admin'): " entrada
@@ -237,9 +218,6 @@ cerrar_sesion() {
   pausar
 }
 
-# --------------------------------------------------------------
-#  Manejo de tipos de pintura
-# --------------------------------------------------------------
 
 mostrar_tipos_validos() {
   printf "Tipos de pintura disponibles:\n" >&2
@@ -266,9 +244,6 @@ pedir_tipo_valido() {
   done
 }
 
-# --------------------------------------------------------------
-#  Manejo de productos
-# --------------------------------------------------------------
 
 ingresar_producto() {
   if ! requerir_sesion; then
@@ -321,7 +296,6 @@ vender_producto() {
   fi
 
   mapfile -t productos <"$ARCHIVO_PRODUCTOS"
-  # "carrito" -> índice de producto => cantidad seleccionada
   declare -A selecciones=()
 
   while true; do
@@ -389,7 +363,6 @@ vender_producto() {
     return
   fi
 
-  # Resumen y actualización de stock
   local total=0
   echo
   echo "=== Resumen de compra ==="
@@ -403,14 +376,12 @@ vender_producto() {
 
     printf "%-12s %-20s %-10s $ %s\n" "$tipo" "$modelo" "$cantidad_comprada" "$subtotal"
 
-    # Actualizar stock en el array
     cantidad=$((cantidad - cantidad_comprada))
     productos[$indice_array]="$codigo|$tipo|$modelo|$descripcion|$cantidad|$precio"
   done
 
   printf "TOTAL A PAGAR: $ %s\n" "$total"
 
-  # Volcar cambios al archivo de productos
   local tmp
   tmp="$(mktemp)"
   for linea in "${productos[@]}"; do
@@ -455,9 +426,6 @@ filtrar_productos() {
   pausar
 }
 
-# --------------------------------------------------------------
-#  Generación de reporte CSV
-# --------------------------------------------------------------
 
 escapar_csv() {
   local valor="$1"
@@ -496,9 +464,6 @@ generar_reporte() {
   pausar
 }
 
-# --------------------------------------------------------------
-#  Menú principal
-# --------------------------------------------------------------
 
 menu_principal() {
   while true; do
@@ -545,8 +510,6 @@ MENU
   done
 }
 
-# --------------------------------------------------------------
-#  Programa principal
-# --------------------------------------------------------------
 asegurar_almacenamiento
 menu_principal
+
