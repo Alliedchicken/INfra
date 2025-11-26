@@ -25,7 +25,8 @@ TIPOS_VALIDOS=(
 # --------------------------------------------------------------
 
 pausar() {
-  read -rp "Presione Enter para continuar..."
+  printf "Presione Enter para continuar..." >&2
+  read -r
 }
 
 # Asegura que existan archivos de usuarios y productos,
@@ -154,6 +155,11 @@ crear_usuario() {
   fi
 
   nuevo_pass="$(pedir_contrasenia 'Ingrese contraseña: ')"
+
+  # Sanitizar por si hubiera CR/LF embebidos
+  nuevo_pass="${nuevo_pass//$'\r'/}"
+  nuevo_pass="${nuevo_pass//$'\n'/}"
+
   printf "%s:%s\n" "$usuario" "$nuevo_pass" >>"$ARCHIVO_USUARIOS"
   echo "Usuario '$usuario' creado correctamente."
   pausar
@@ -236,9 +242,9 @@ cerrar_sesion() {
 # --------------------------------------------------------------
 
 mostrar_tipos_validos() {
-  echo "Tipos de pintura disponibles:"
+  printf "Tipos de pintura disponibles:\n" >&2
   for tipo in "${TIPOS_VALIDOS[@]}"; do
-    echo "  - $tipo"
+    printf "  - %s\n" "$tipo" >&2
   done
 }
 
@@ -246,7 +252,8 @@ pedir_tipo_valido() {
   local entrada normalizado tipo
   while true; do
     mostrar_tipos_validos
-    read -r -p "Ingrese tipo: " entrada
+    printf "Ingrese tipo: " >&2
+    read -r entrada
     entrada="$(recortar "$entrada")"
     normalizado="${entrada,,}"
     for tipo in "${TIPOS_VALIDOS[@]}"; do
@@ -255,7 +262,7 @@ pedir_tipo_valido() {
         return 0
       fi
     done
-    echo "Tipo inválido. Debe ser uno de la lista."
+    printf "Tipo inválido. Debe ser uno de la lista.\n" >&2
   done
 }
 
