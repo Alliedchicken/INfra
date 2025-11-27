@@ -1,5 +1,5 @@
 V "GNAT Lib v10"
-M P W=b
+M P W=8
 P SS ZX
 
 RN
@@ -25,7 +25,7 @@ RV MAX_SELECT_ALTERNATIVES=2
 RV MAX_TASK_ENTRIES=2
 RV MAX_TASKS=1+
 
-U tambo%b		tambo.adb		946dcee6 NE OO SU
+U tambo%b		tambo.adb		189ddeed NE OO SU
 W ada%s			ada.ads			ada.ali
 Z ada.calendar.delays%s	a-caldel.adb		a-caldel.ali
 W ada.characters%s	a-charac.ads		a-charac.ali
@@ -109,40 +109,40 @@ D s-traent.ads		20230707070819 005bf670 system.traceback_entries%s
 D s-unstyp.ads		20230707070819 34867c83 system.unsigned_types%s
 D s-valuns.ads		20230707070819 35067db9 system.val_uns%s
 D s-wchcon.ads		20230707070819 1b7d22d2 system.wch_con%s
-D tambo.adb		20251126182622 ebb92c0e tambo%b
+D tambo.adb		20251127212849 67493c05 tambo%b
 G a e
 G c Z b b [tambo standard 7 11 none]
 X 1 ada.ads
-16K9*Ada 20e8 59|1r6 1r37 2r6 2r37 3r6 4r6 5r6 5r37 15r36 17r35 40r50
+16K9*Ada 20e8 59|1r7 1r38 2r6 2r37 3r6 4r6 5r6 5r37 11r36 12r35 30r50
 X 4 a-charac.ads
 16K13*Characters 18e19 59|5r10 5r41
 X 5 a-chlat1.ads
 18K24*Latin_1 296e27 59|5w21 5r52
-53e4*ESC{character} 59|30r42 31r43 32r42 33r42 34r42 35r42
+53e4*ESC{character} 59|18r42 19r42 20r42 21r42 22r42 23r42
 X 9 a-numeri.ads
-16K13*Numerics 32e17 59|3r10 4r10 15r40 17r39
+16K13*Numerics 32e17 59|3r10 4r10 11r40 12r39
 X 10 a-nudira.ads
-44k22*Discrete_Random 75e33 59|4w19 17r48
-50R9 Generator<38|63R9> 59|129r44[17]
-52V13 Random{boolean} 59|143s41[17]
-54U14 Reset<38|106p14> 59|139s23[17]
+44k22*Discrete_Random 75e33 59|4w19 12r48
+50R9 Generator<38|63R9> 59|221r32[12]
+52V13 Random{boolean} 59|232s41[12]
+54U14 Reset<38|106p14> 59|229s23[12]
 X 11 a-nudira.adb
-53V16 Random[38|83]{boolean} 39|392b13[59|17]
+53V16 Random[38|83]{boolean} 39|392b13[59|12]
 X 12 a-nuflra.ads
-41K22*Float_Random 74e30 59|3w19 15r49
-47R9*Generator<38|63R9> 59|95r36 106r66 113r66 130r44
+41K22*Float_Random 74e30 59|3w19 11r49
+47R9*Generator<38|63R9> 59|175r36 183r66 190r66 222r32
 49F12*Uniformly_Distributed{float}
-51V13*Random{49F12}<38|71p13> 59|100s40
-54U14*Reset<38|106p14> 59|140s23
+51V13*Random{49F12}<38|71p13> 59|180s39
+54U14*Reset<38|106p14> 59|230s23
 X 15 a-string.ads
-16K13*Strings 35e16 59|2r10 2r41 40r54
-33n24*Left{33E9} 59|40r62
+16K13*Strings 35e16 59|2r10 2r41 30r54
+33n24*Left{33E9} 59|30r62
 X 16 a-strfix.ads
 43K21*Fixed 596e22 59|2w18 2r49
-468V13*Trim{string} 59|40s14
+468V13*Trim{string} 59|30s14
 X 19 a-textio.ads
-57K13*Text_IO 727e16 59|1w10 1r41
-508U14*Put_Line 59|58s7 241s22
+57K13*Text_IO 727e16 59|1w11 1r42
+508U14*Put_Line 59|48s7 161s22
 X 21 interfac.ads
 74M9*Unsigned_32
 77M9*Unsigned_64
@@ -153,74 +153,78 @@ X 44 s-stausa.ads
 208U14*Initialize 209i<c,__gnat_stack_usage_initialize>22
 273U14*Output_Results 277i<c,__gnat_stack_usage_output_results>22
 X 59 tambo.adb
-7U11*Tambo 7b11 265l5 265t10
-12I12 Id_Vaca{positive} 37r33 43r53 69r26 70r26 80r26 81r26 88r25 106r28
-. 113r28 124r28 128r28 134r29 160r19 174r36 182r35 201r36 209r35 228r35 258r13
-15K12 Random_Duracion=15:49 95r20 100r24 106r50 113r50 130r28 140r7
-17K12 Random_Eleccion[10|44] 129r28 139r7 143r25
-19i4 Capacidad_Ordenie{natural} 173r29
-20i4 Capacidad_Vacunacion{natural} 200r37
-21i4 Capacidad_Camion{natural} 226r33 227r38 229r37 238r37 239r45
-24E9 Tipo_Evento 24e91 43r71
-24n25 Evento_Ordenie{24E9} 46r18 53r18 176r77 183r78
-24n41 Evento_Vacunacion{24E9} 47r18 54r18 203r80 210r81
-24n60 Evento_Camion1{24E9} 48r18 55r18 231r73
-24n76 Evento_Camion2{24E9} 49r18 56r18 234r73
-30a4 Color_Reset{string} 62r10 244r25
-31a4 Color_Ordenie{string} 46r41
-32a4 Color_Vacunacion{string} 47r40
-33a4 Color_Camion1{string} 48r40
-34a4 Color_Camion2{string} 49r40
-35a4 Color_Final{string} 242r25
-37V13 Etiqueta_Vaca{string} 37b13 37>28 41l8 41t21 61s23
-37i28 Id{12I12} 40r44
-43U14 Imprimir_Mensaje 43b14 43>32 43>48 43>62 63l8 63t24 176s19 183s19 203s19
-. 210s19 231s22 234s22
-43a32 Texto{string} 61r50
-43i48 Id{12I12} 61r38
-43e62 Evento{24E9} 45r15 52r15
-44a7 Color{string} 59r10
-51a7 Prefijo{string} 60r10
-68t9 Sala_Ordenie 108r7 110r7 167b14 189l8 189t20
-69Y13 Entrar 69>21 108s20 174b23 177l20 177t26
-69i21 Id{12I12} 176r73
-70Y13 Salir 70>21 110s20 182b23 185l20 185t25
-70i21 Id{12I12} 183r74
-79t9 Area_Vacunacion 115r7 117r7 194b14 216l8 216t23
-80Y13 Entrar 80>21 115s23 201b23 204l20 204t26
-80i21 Id{12I12} 203r76
-81Y13 Salir 81>21 117s23 209b23 212l20 212t25
-81i21 Id{12I12} 210r77
-87t9 Gestion_Camiones 154r7 220b14 252l8 252t24
-88Y13 Subir 88>20 154s24 228b23 246l20 246t25
-88i20 Id{12I12} 231r69 234r69
-94V13 Duracion_Aleatoria{duration} 94b13 95=7 96>7 101l8 101t26 109s13 116s13
-95r7 Gen{12|47R9} 100r48
-96i7 Max_Segundos{positive} 100r62
-106U14 Ordenar 106b14 106>23 106=37 111l8 111t15 147s10 149s10
-106i23 Id{12I12} 108r28 110r27
-106r37 Gen{12|47R9} 109m33 109r33
-113U14 Vacunar 113b14 113>23 113=37 118l8 118t15 146s10 150s10
-113i23 Id{12I12} 115r31 117r30
-113r37 Gen{12|47R9} 116m33 116r33
-123T14 Tarea_Vaca 125l8 125e18 127b14 155l8 155t18 160r31
-124Y13 Comenzar 124>23 134b14 136l11 136t19 259s17
-124i23 Id{12I12} 135r19
-128i7 Mi_Id{12I12} 135m10 139r59 140r59 146r19 147r19 149r19 150r19 154r31
-129r7 Generador_Eleccion{10|50R9[17]} 139r30 143r49
-130r7 Generador_Duracion{12|47R9} 140r30 146m26 146r26 147m26 147r26 149m26
-. 149r26 150m26 150r26
-131b7 Vacuna_Primero{boolean} 143m7 145r10
-134i24 Id{12I12}
-160a4 Vacas(123T14) 259r7
-168i7 Ocupadas{natural} 173r18 175m19 175r31 181r18 184m19 184r31
-174i31 Id{12I12}
-182i30 Id{12I12}
-195i7 Cantidad_Adentro{natural} 200r18 202m19 202r39 208r18 211m19 211r39
-201i31 Id{12I12}
-209i30 Id{12I12}
-221i7 Cant_Camion1{natural} 226r18 229r22 230m22 230r38 238r22
-222i7 Cant_Camion2{natural} 227r23 233m22 233r38 239r30
-228i30 Id{12I12}
-258i8 I{12I12} 259r14 259r27
+7U11*Tambo 7b11 253l5 253t10
+9I12 Id_Vaca{positive} 28r33 33r53 105r26 106r26 115r36 123r35 135r25 146r35
+. 183r28 190r28 216r28 220r16 225r29 245r19 248r13
+11K12 Random_Duracion=11:49 175r20 180r23 183r50 190r50 222r16 230r7
+12K12 Random_Eleccion[10|44] 221r16 229r7 232r25
+14i4 Capacidad_Ordenie{natural} 114r29
+15i4 Capacidad_Vacunacion{natural} 102r35
+16i4 Capacidad_Camion{natural} 144r30 145r35 148r34 158r34 159r42
+18a4 Color_Reset{string} 50r18 163r24
+19a4 Color_Ordenie{string} 36r41
+20a4 Color_Vacunacion{string} 37r41
+21a4 Color_Camion1{string} 38r41
+22a4 Color_Camion2{string} 39r41
+23a4 Color_Final{string} 161r31
+25E9 Tipo_Evento 26e73 33r71
+26n7 Evento_Ordenie{25E9} 36r18 43r18 118r40 126r40
+26n23 Evento_Vacunacion{25E9} 37r18 44r18 196r28 200r28 206r28 210r28
+26n42 Evento_Camion1{25E9} 38r18 45r18 151r57
+26n58 Evento_Camion2{25E9} 39r18 46r18 155r57
+28V13 Etiqueta_Vaca{string} 28b13 28>28 31l8 31t21 49s31
+28i28 Id{9I12} 30r44
+33U14 Imprimir_Mensaje 33b14 33>32 33>48 33>62 51l8 51t24 117s19 125s19 150s22
+. 154s22 195s7 199s7 205s7 209s7
+33a32 Texto{string} 49r57
+33i48 Id{9I12} 49r45
+33e62 Evento{25E9} 35r15 42r15
+34a7 Color{string} 48r17
+41a7 Prefijo{string} 48r25
+53T14 Semaforo_Binario 56l8 56e24 58b14 75l8 75t24 101r18
+54Y13 P 64b23 66l20 66t21 194s19 204s19
+55Y13 V 69b20 71l17 71t18 197s19 207s19
+59b7 Libre{boolean} 63r18 65m19 70m16
+77T14 Semaforo_Conteo 77d31 80l8 80e23 82b14 99l8 99t23 102r18
+77i31 Max{positive} 83r26
+78Y13 P 88b23 90l20 90t21 192s18
+79Y13 V 93b20 95l17 95t18 212s18
+83i7 Valor{integer} 87r18 89m19 89r28 94m16 94r25
+101t4 Sem_Pasillo{53T14} 194r7 197r7 204r7 207r7
+102t4 Sem_Mangas{77T14} 192r7 212r7
+104t9 Sala_Ordenie 109b14 131l8 131t20 185r7 187r7
+105Y13 Entrar 105>21 115b23 119l20 119t26 185s20
+105i21 Id{9I12} 118r36
+106Y13 Salir 106>21 123b23 127l20 127t25 187s20
+106i21 Id{9I12} 126r36
+110i7 Ocupadas{natural} 114r18 116m19 116r31 122r18 124m19 124r31
+115i31 Id{9I12}
+123i30 Id{9I12}
+134t9 Gestion_Camiones 138b14 172l8 172t24 242r7
+135Y13 Subir 135>20 146b23 166l20 166t25 242s24
+135i20 Id{9I12} 151r53 155r53
+139i7 Cant_Cam1{natural} 144r18 148r22 149m22 149r35 158r22
+140i7 Cant_Cam2{natural} 145r23 153m22 153r35 159r30
+146i30 Id{9I12}
+174V13 Duracion_Aleatoria{duration} 174b13 175=7 176>7 181l8 181t26 186s13
+. 202s13
+175r7 Gen{12|47R9} 180r46
+176i7 Max_Segundos{positive} 180r59
+183U14 Ordenar 183b14 183>23 183=37 188l8 188t15 236s10 238s10
+183i23 Id{9I12} 185r27 187r26
+183r37 Gen{12|47R9} 186m32 186r32
+190U14 Vacunar 190b14 190>23 190=37 213l8 213t15 235s10 239s10
+190i23 Id{9I12} 196r24 200r24 206r24 210r24
+190r37 Gen{12|47R9} 202m32 202r32
+215T14 Tarea_Vaca 217l8 217e18 219b14 243l8 243t18 245r31
+216Y13 Comenzar 216>23 225b14 227l11 227t19 249s16
+216i23 Id{9I12} 226r19
+220i7 Mi_Id{9I12} 226m10 229r43 230r45 235r18 236r18 238r18 239r18 242r30
+221r7 GenE{10|50R9[12]} 229r29 232r48
+222r7 GenDur{12|47R9} 230r29 235m25 235r25 236m25 236r25 238m25 238r25 239m25
+. 239r25
+223b7 Vacuna_Primero{boolean} 232m7 234r10
+225i24 Id{9I12}
+245a4 Vacas(215T14) 249r7
+248i8 I{9I12} 249r13 249r25
 
