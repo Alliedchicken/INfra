@@ -144,10 +144,3 @@ int main(void) {
 
     return 0;
 }
-
-═════\n");
-    printf("  TODAS LAS OPERACIONES COMPLETADAS EXITOSAMENTE\n");
-    printf("═══════════════════════════════════════════════════════\n");
-
-    return 0;
-}
