@@ -3,17 +3,12 @@ M P W=b
 P SS ZX
 
 RN
-RV SIMPLE_BARRIERS
 RV NO_DELAY
 RV NO_EXCEPTION_HANDLERS
-RV NO_EXCEPTION_PROPAGATION
 RV NO_EXCEPTIONS
 RV NO_FIXED_POINT
 RV NO_FLOATING_POINT
 RV NO_IO
-RV NO_LOCAL_PROTECTED_OBJECTS
-RV NO_NESTED_FINALIZATION
-RV NO_PROTECTED_TYPES
 RV NO_RELATIVE_DELAY
 RV NO_SECONDARY_STACK
 RV NO_SELECT_STATEMENTS
@@ -26,18 +21,15 @@ RV NO_DYNAMIC_SIZED_OBJECTS
 RV NO_IMPLEMENTATION_PRAGMAS
 RV NO_IMPLICIT_LOOPS
 RV SPARK_05
-RV MAX_PROTECTED_ENTRIES=1
 RV MAX_SELECT_ALTERNATIVES=2
 RV MAX_TASK_ENTRIES=2
 RV MAX_TASKS=1+
-RV MAX_ENTRY_QUEUE_LENGTH=1+
 
-U tambo%b		tambo.adb		fb39a597 NE OO SU
+U tambo%b		tambo2.adb		189ddeed NE OO SU
 W ada%s			ada.ads			ada.ali
 Z ada.calendar.delays%s	a-caldel.adb		a-caldel.ali
 W ada.characters%s	a-charac.ads		a-charac.ali
 W ada.characters.latin_1%s  a-chlat1.ads	a-chlat1.ali
-Z ada.exceptions%s	a-except.adb		a-except.ali
 W ada.numerics%s	a-numeri.ads		a-numeri.ali
 W ada.numerics.discrete_random%s
 W ada.numerics.float_random%s  a-nuflra.adb	a-nuflra.ali
@@ -54,12 +46,8 @@ Z system.parameters%s	s-parame.adb		s-parame.ali
 Z system.random_numbers%s  s-rannum.adb		s-rannum.ali
 Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
 Z system.soft_links%s	s-soflin.adb		s-soflin.ali
-Z system.standard_library%s  s-stalib.adb	s-stalib.ali
 Z system.task_info%s	s-tasinf.adb		s-tasinf.ali
 Z system.tasking%s	s-taskin.adb		s-taskin.ali
-Z system.tasking.protected_objects%s  s-taprob.adb  s-taprob.ali
-Z system.tasking.protected_objects.entries%s  s-tpoben.adb  s-tpoben.ali
-Z system.tasking.protected_objects.operations%s  s-tpobop.adb  s-tpobop.ali
 Z system.tasking.rendezvous%s  s-tasren.adb	s-tasren.ali
 Z system.tasking.stages%s  s-tassta.adb		s-tassta.ali
 
@@ -96,7 +84,6 @@ D s-finroo.ads		20230707070819 4ff27390 system.finalization_root%s
 D s-imgint.ads		20230707070819 02dbe0c2 system.img_int%s
 D s-imguns.ads		20230707070819 9ff43cf7 system.img_uns%s
 D s-linux.ads		20230707070818 ed0b8aee system.linux%s
-D s-memory.ads		20230707070819 597d6634 system.memory%s
 D s-multip.ads		20230707070819 38ac9f73 system.multiprocessors%s
 D s-oscons.ads		20230708061938 56602da1 system.os_constants%s
 D s-osinte.ads		20230708061938 baabc537 system.os_interface%s
@@ -109,7 +96,6 @@ D s-soflin.ads		20230707070819 a7318a92 system.soft_links%s
 D s-stache.ads		20230707070819 a37c21ec system.stack_checking%s
 D s-stausa.ads		20230707070819 017a0a05 system.stack_usage%s
 D s-stalib.ads		20230707070819 09bd3940 system.standard_library%s
-D s-stalib.adb		20230707070819 f2fe2716 system.standard_library%b
 D s-stoele.ads		20230707070819 2dc34a04 system.storage_elements%s
 D s-tasinf.ads		20230707070818 2b3f8252 system.task_info%s
 D s-taspri.ads		20230707070818 f40ac08d system.task_primitives%s
@@ -117,137 +103,128 @@ D s-taprop.ads		20230707070818 1dd2e1b6 system.task_primitives.operations%s
 D s-taskin.ads		20230707070818 b9d612e2 system.tasking%s
 D s-taprob.ads		20230707070818 acd6094d system.tasking.protected_objects%s
 D s-tpoben.ads		20230707070819 60ad3dae system.tasking.protected_objects.entries%s
-D s-tpobop.ads		20230707070819 5f548bb3 system.tasking.protected_objects.operations%s
 D s-tasren.ads		20230707070818 a67a9949 system.tasking.rendezvous%s
 D s-tassta.ads		20230707070818 cca55c94 system.tasking.stages%s
 D s-traent.ads		20230707070819 005bf670 system.traceback_entries%s
 D s-unstyp.ads		20230707070819 34867c83 system.unsigned_types%s
 D s-valuns.ads		20230707070819 35067db9 system.val_uns%s
 D s-wchcon.ads		20230707070819 1b7d22d2 system.wch_con%s
-D tambo.adb		20251127173545 84ed477f tambo%b
+D tambo2.adb		20251127175503 67493c05 tambo%b
 G a e
 G c Z b b [tambo standard 7 11 none]
 X 1 ada.ads
-16K9*Ada 20e8 62|1r6 1r37 2r6 2r37 3r6 4r6 5r6 5r37 14r36 15r35 40r50
+16K9*Ada 20e8 59|1r6 1r37 2r6 2r37 3r6 4r6 5r6 5r37 14r36 15r35 39r50
 X 4 a-charac.ads
-16K13*Characters 18e19 62|5r10 5r41
+16K13*Characters 18e19 59|5r10 5r41
 X 5 a-chlat1.ads
-18K24*Latin_1 296e27 62|5w21 5r52
-53e4*ESC{character} 62|27r42 28r42 29r42 30r42 31r42 32r42
+18K24*Latin_1 296e27 59|5w21 5r52
+53e4*ESC{character} 59|24r42 25r42 26r42 27r42 28r42 29r42
 X 9 a-numeri.ads
-16K13*Numerics 32e17 62|3r10 4r10 14r40 15r39
+16K13*Numerics 32e17 59|3r10 4r10 14r40 15r39
 X 10 a-nudira.ads
-44k22*Discrete_Random 75e33 62|4w19 15r48
-50R9 Generator<39|63R9> 62|257r44[15]
-52V13 Random{boolean} 62|271s41[15]
-54U14 Reset<39|106p14> 62|267s23[15]
+44k22*Discrete_Random 75e33 59|4w19 15r48
+50R9 Generator<38|63R9> 59|257r32[15]
+52V13 Random{boolean} 59|268s41[15]
+54U14 Reset<38|106p14> 59|265s23[15]
 X 11 a-nudira.adb
-53V16 Random[39|83]{boolean} 40|392b13[62|15]
+53V16 Random[38|83]{boolean} 39|392b13[59|15]
 X 12 a-nuflra.ads
-41K22*Float_Random 74e30 62|3w19 14r49
-47R9*Generator<39|63R9> 62|195r36 208r66 216r66 258r44
+41K22*Float_Random 74e30 59|3w19 14r49
+47R9*Generator<38|63R9> 59|200r36 211r66 218r66 258r32
 49F12*Uniformly_Distributed{float}
-51V13*Random{49F12}<39|71p13> 62|200s40
-54U14*Reset<39|106p14> 62|268s23
+51V13*Random{49F12}<38|71p13> 59|205s39
+54U14*Reset<38|106p14> 59|266s23
 X 15 a-string.ads
-16K13*Strings 35e16 62|2r10 2r41 40r54
-33n24*Left{33E9} 62|40r62
+16K13*Strings 35e16 59|2r10 2r41 39r54
+33n24*Left{33E9} 59|39r62
 X 16 a-strfix.ads
-43K21*Fixed 596e22 62|2w18 2r49
-468V13*Trim{string} 62|40s14
+43K21*Fixed 596e22 59|2w18 2r49
+468V13*Trim{string} 59|39s14
 X 19 a-textio.ads
-57K13*Text_IO 727e16 62|1w10 1r41
-508U14*Put_Line 62|58s7 178s22
+57K13*Text_IO 727e16 59|1w10 1r41
+508U14*Put_Line 59|57s7 183s22
 X 21 interfac.ads
 74M9*Unsigned_32
 77M9*Unsigned_64
-X 24 system.ads
-67M9*Address
-X 34 s-memory.ads
-53V13*Alloc{24|67M9} 103i<c,__gnat_malloc>22
-68U14*Free 104i<c,__gnat_free>22
-76V13*Realloc{24|67M9} 105i<c,__gnat_realloc>22
-X 39 s-rannum.ads
-75V13*Random{21|74M9} 40|221i21
-76V13*Random{21|77M9} 40|221i21
-X 45 s-stausa.ads
+X 38 s-rannum.ads
+75V13*Random{21|74M9} 39|221i21
+76V13*Random{21|77M9} 39|221i21
+X 44 s-stausa.ads
 208U14*Initialize 209i<c,__gnat_stack_usage_initialize>22
 273U14*Output_Results 277i<c,__gnat_stack_usage_output_results>22
-X 47 s-stalib.adb
-93U14 Break_Start 94i<c,__gnat_break_start>22
-X 62 tambo.adb
-7U11*Tambo 7b11 301l5 301t10
-12I12 Id_Vaca{positive} 37r33 43r53 120r26 121r26 131r36 140r35 153r25 164r35
-. 208r28 216r28 252r28 256r28 262r29 288r19 294r13
-14K12 Random_Duracion=14:49 195r20 200r24 208r50 216r50 258r28 268r7
-15K12 Random_Eleccion[10|44] 257r28 267r7 271r25
-17i4 Capacidad_Ordenie{natural} 130r29
-18i4 Capacidad_Vacunacion{natural} 112r35
-19i4 Capacidad_Camion{natural} 162r33 163r38 165r37 175r37 176r45
-22E9 Tipo_Evento 22e91 43r71
-22n25 Evento_Ordenie{22E9} 46r18 53r18 134r62 142r63
-22n41 Evento_Vacunacion{22E9} 47r18 54r18 225r14 228r14 238r14 241r14
-22n60 Evento_Camion1{22E9} 48r18 55r18 168r58
-22n76 Evento_Camion2{22E9} 49r18 56r18 172r58
-27a4 Color_Reset{string} 62r10 181r25
-28a4 Color_Ordenie{string} 46r41
-29a4 Color_Vacunacion{string} 47r41
-30a4 Color_Camion1{string} 48r41
-31a4 Color_Camion2{string} 49r41
-32a4 Color_Final{string} 179r25
-37V13 Etiqueta_Vaca{string} 37b13 37>28 41l8 41t21 61s23
-37i28 Id{12I12} 40r44
-43U14 Imprimir_Mensaje 43b14 43>32 43>48 43>62 63l8 63t24 133s19 141s19 167s22
-. 171s22 223s7 226s7 236s7 239s7
-43a32 Texto{string} 61r50
-43i48 Id{12I12} 61r38
-43e62 Evento{22E9} 45r15 52r15
-44a7 Color{string} 59r10
-51a7 Prefijo{string} 60r10
-70W19 Semaforo_Binario 74E7 75l8 75e24 77b19 87l8 87t24 111r18
-71Y13 P 78b13 81l11 81t12 222s19 235s19
-72U17 V 83b17 86l11 86t12 229s19 242s19
-74b7 Libre{boolean} 78r20 80r10 85r10
-91W19 Semaforo_Conteo 91d36 95E7 96l8 96e23 98b19 108l8 108t23 112r18
-91i36 Max{positive} 95r26
-92Y13 P 99b13 102l11 102t12 219s18
-93U17 V 104b17 107l11 107t12 245s18
-95i7 Valor{integer} 99r20 101r10 101r19 106r10 106r19
-111w4 Sem_Pasillo{70W19} 222r7 229r7 235r7 242r7
-112w4 Sem_Mangas{91W19} 219r7 245r7
-119t9 Sala_Ordenie 124b14 148l8 148t20 210r7 212r7
-120Y13 Entrar 120>21 131b23 135l20 135t26 210s20
-120i21 Id{12I12} 134r58
-121Y13 Salir 121>21 140b23 144l20 144t25 212s20
-121i21 Id{12I12} 142r59
-125i7 Ocupadas{natural} 130r18 132m19 132r31 139r18 143m19 143r31
-131i31 Id{12I12}
-140i30 Id{12I12}
-152t9 Gestion_Camiones 156b14 189l8 189t24 282r7
-153Y13 Subir 153>20 164b23 183l20 183t25 282s24
-153i20 Id{12I12} 168r54 172r54
-157i7 Cant_Camion1{natural} 162r18 165r22 166m22 166r38 175r22
-158i7 Cant_Camion2{natural} 163r23 170m22 170r38 176r30
-164i30 Id{12I12}
-194V13 Duracion_Aleatoria{duration} 194b13 195=7 196>7 201l8 201t26 211s13
-. 232s13
-195r7 Gen{12|47R9} 200r48
-196i7 Max_Segundos{positive} 200r62
-208U14 Ordenar 208b14 208>23 208=37 213l8 213t15 275s10 277s10
-208i23 Id{12I12} 210r28 212r27
-208r37 Gen{12|47R9} 211m33 211r33
-216U14 Vacunar 216b14 216>23 216=37 246l8 246t15 274s10 278s10
-216i23 Id{12I12} 225r10 228r10 238r10 241r10
-216r37 Gen{12|47R9} 232m33 232r33
-251T14 Tarea_Vaca 253l8 253e18 255b14 283l8 283t18 288r31
-252Y13 Comenzar 252>23 262b14 264l11 264t19 295s17
-252i23 Id{12I12} 263r19
-256i7 Mi_Id{12I12} 263m10 267r59 268r59 274r19 275r19 277r19 278r19 282r31
-257r7 Generador_Eleccion{10|50R9[15]} 267r30 271r49
-258r7 Generador_Duracion{12|47R9} 268r30 274m26 274r26 275m26 275r26 277m26
-. 277r26 278m26 278r26
-259b7 Vacuna_Primero{boolean} 271m7 273r10
-262i24 Id{12I12}
-288a4 Vacas(251T14) 295r7
-294i8 I{12I12} 295r14 295r27
+X 59 tambo2.adb
+7U11*Tambo 7b11 289l5 289t10
+12I12 Id_Vaca{positive} 37r33 42r53 124r26 125r26 134r36 142r35 157r25 168r35
+. 211r28 218r28 252r28 256r16 261r29 281r19 284r13
+14K12 Random_Duracion=14:49 200r20 205r23 211r50 218r50 258r16 266r7
+15K12 Random_Eleccion[10|44] 257r16 265r7 268r25
+17i4 Capacidad_Ordenie{natural} 133r29
+18i4 Capacidad_Vacunacion{natural} 118r35
+19i4 Capacidad_Camion{natural} 166r30 167r35 170r34 180r34 181r42
+24a4 Color_Reset{string} 59r18 185r24
+25a4 Color_Ordenie{string} 45r41
+26a4 Color_Vacunacion{string} 46r41
+27a4 Color_Camion1{string} 47r41
+28a4 Color_Camion2{string} 48r41
+29a4 Color_Final{string} 183r31
+31E9 Tipo_Evento 32e73 42r71
+32n7 Evento_Ordenie{31E9} 45r18 52r18 137r40 145r40
+32n23 Evento_Vacunacion{31E9} 46r18 53r18 226r28 230r28 238r28 242r28
+32n42 Evento_Camion1{31E9} 47r18 54r18 173r57
+32n58 Evento_Camion2{31E9} 48r18 55r18 177r57
+37V13 Etiqueta_Vaca{string} 37b13 37>28 40l8 40t21 58s31
+37i28 Id{12I12} 39r44
+42U14 Imprimir_Mensaje 42b14 42>32 42>48 42>62 60l8 60t24 136s19 144s19 172s22
+. 176s22 225s7 229s7 237s7 241s7
+42a32 Texto{string} 58r57
+42i48 Id{12I12} 58r45
+42e62 Evento{31E9} 44r15 51r15
+43a7 Color{string} 57r17
+50a7 Prefijo{string} 57r25
+65T14 Semaforo_Binario 68l8 68e24 70b14 87l8 87t24 117r18
+66Y13 P 76b23 78l20 78t21 224s19 236s19
+67Y13 V 81b20 83l17 83t18 227s19 239s19
+71b7 Libre{boolean} 75r18 77m19 82m16
+92T14 Semaforo_Conteo 92d31 95l8 95e23 97b14 114l8 114t23 118r18
+92i31 Max{positive} 98r26
+93Y13 P 103b23 105l20 105t21 221s18
+94Y13 V 108b20 110l17 110t18 245s18
+98i7 Valor{integer} 102r18 104m19 104r28 109m16 109r25
+117t4 Sem_Pasillo{65T14} 224r7 227r7 236r7 239r7
+118t4 Sem_Mangas{92T14} 221r7 245r7
+123t9 Sala_Ordenie 128b14 150l8 150t20 213r7 215r7
+124Y13 Entrar 124>21 134b23 138l20 138t26 213s20
+124i21 Id{12I12} 137r36
+125Y13 Salir 125>21 142b23 146l20 146t25 215s20
+125i21 Id{12I12} 145r36
+129i7 Ocupadas{natural} 133r18 135m19 135r31 141r18 143m19 143r31
+134i31 Id{12I12}
+142i30 Id{12I12}
+156t9 Gestion_Camiones 160b14 194l8 194t24 278r7
+157Y13 Subir 157>20 168b23 188l20 188t25 278s24
+157i20 Id{12I12} 173r53 177r53
+161i7 Cant_Cam1{natural} 166r18 170r22 171m22 171r35 180r22
+162i7 Cant_Cam2{natural} 167r23 175m22 175r35 181r30
+168i30 Id{12I12}
+199V13 Duracion_Aleatoria{duration} 199b13 200=7 201>7 206l8 206t26 214s13
+. 233s13
+200r7 Gen{12|47R9} 205r46
+201i7 Max_Segundos{positive} 205r59
+211U14 Ordenar 211b14 211>23 211=37 216l8 216t15 272s10 274s10
+211i23 Id{12I12} 213r27 215r26
+211r37 Gen{12|47R9} 214m32 214r32
+218U14 Vacunar 218b14 218>23 218=37 246l8 246t15 271s10 275s10
+218i23 Id{12I12} 226r24 230r24 238r24 242r24
+218r37 Gen{12|47R9} 233m32 233r32
+251T14 Tarea_Vaca 253l8 253e18 255b14 279l8 279t18 281r31
+252Y13 Comenzar 252>23 261b14 263l11 263t19 285s16
+252i23 Id{12I12} 262r19
+256i7 Mi_Id{12I12} 262m10 265r43 266r45 271r18 272r18 274r18 275r18 278r30
+257r7 GenE{10|50R9[15]} 265r29 268r48
+258r7 GenDur{12|47R9} 266r29 271m25 271r25 272m25 272r25 274m25 274r25 275m25
+. 275r25
+259b7 Vacuna_Primero{boolean} 268m7 270r10
+261i24 Id{12I12}
+281a4 Vacas(251T14) 285r7
+284i8 I{12I12} 285r13 285r25
 
