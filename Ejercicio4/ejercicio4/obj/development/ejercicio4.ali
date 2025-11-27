@@ -1,0 +1,51 @@
+V "GNAT Lib v15"
+M P W=8
+A -Og
+A -gnatA
+A -ffunction-sections
+A -fdata-sections
+A -g
+A -gnatwa
+A -gnatw.X
+A -gnatVa
+A -gnaty3
+A -gnatya
+A -gnatyA
+A -gnatyB
+A -gnatyb
+A -gnatyc
+A -gnaty-
+A -gnatyd
+A -gnatye
+A -gnatyf
+A -gnatyh
+A -gnatyi
+A -gnatyI
+A -gnatyk
+A -gnatyl
+A -gnatym
+A -gnatyn
+A -gnatyO
+A -gnatyp
+A -gnatyr
+A -gnatyS
+A -gnatyt
+A -gnatyu
+A -gnatyx
+A -gnatW8
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U ejercicio4%b		ejercicio4.adb		45733fe8 NE OO SU
+
+D ejercicio4.adb	20251126153006 45733fe8 ejercicio4%b
+D system.ads		20250808065140 a869df9e system%s
+G a e
+G c Z b b [ejercicio4 standard 1 11 none]
+X 1 ejercicio4.adb
+1U11*Ejercicio4 1b11 4l5 4t15
+

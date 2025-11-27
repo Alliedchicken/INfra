@@ -11,11 +11,24 @@ services:
     networks:
       - infra-net
 
-  web:
+  web_1:
     build:
       context: ./web
     image: web-app:latest
-    hostname: web
+    hostname: web_1
+    depends_on:
+      - redis
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - infra-net
+
+  web_2:
+    build:
+      context: ./web
+    image: web-app:latest
+    hostname: web_2
     depends_on:
       - redis
     environment:
@@ -34,7 +47,8 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      - web
+      - web_1
+      - web_2
     restart: unless-stopped
     networks:
       - infra-net

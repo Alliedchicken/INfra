@@ -1,0 +1,14 @@
+ejercicio4.adb:6:11: warning: file name does not match unit name, should be "tambo.adb" [enabled by default]
+ejercicio4.adb:13:07: (style) space required [-gnatyc]
+ejercicio4.adb:14:47: error: "Float_Random" is not the name of a generic package
+ejercicio4.adb:15:07: (style) space required [-gnatyc]
+ejercicio4.adb:18:45: (style) space required [-gnatyt]
+ejercicio4.adb:27:10: (style) space required [-gnatyc]
+ejercicio4.adb:113:13: (style) space required [-gnatyc]
+ejercicio4.adb:136:20: error: "Random_Duracion" is undefined (more references follow)
+ejercicio4.adb:174:10: (style) space required [-gnatyc]
+ejercicio4.adb:179:10: (style) space required [-gnatyc]
+ejercicio4.adb:183:10: (style) space required [-gnatyc]
+ejercicio4.adb:194:10: (style) space required [-gnatyc]
+ejercicio4.adb:211:07: (style) space required [-gnatyc]
+ejercicio4.adb:212:07: (style) space required [-gnatyc]
