@@ -11,28 +11,27 @@ procedure Tambo is
    -------------------------------------------------
    subtype Id_Vaca is Positive range 1 .. 100;
 
-   -- Random para tiempos de espera (en segundos)
    package Random_Duracion renames Ada.Numerics.Float_Random;
-   -- Random para elegir si la vaca se vacuna primero u ordena primero
    package Random_Eleccion is new Ada.Numerics.Discrete_Random (Boolean);
 
-   Capacidad_Ordenie      : constant Natural := 15;
+   Capacidad_Ordenie     : constant Natural := 15;
    Capacidad_Vacunacion  : constant Natural := 5;
    Capacidad_Camion      : constant Natural := 50;
 
-   -- Tipos de evento para colorear la salida
-   type Tipo_Evento is (Evento_Ordenie, Evento_Vacunacion, Evento_Camion1, Evento_Camion2);
+   type Tipo_Evento is (Evento_Ordenie,
+                        Evento_Vacunacion,
+                        Evento_Camion1,
+                        Evento_Camion2);
 
    -------------------------------------------------
    --  UTILIDADES DE IMPRESION (CON COLORES)
    -------------------------------------------------
-   -- Codigos ANSI de color
    Color_Reset      : constant String := ESC & "[0m";
-   Color_Ordenie     : constant String := ESC & "[33m";  -- amarillo
-   Color_Vacunacion : constant String := ESC & "[34m";  -- azul
-   Color_Camion1    : constant String := ESC & "[32m";  -- verde
-   Color_Camion2    : constant String := ESC & "[35m";  -- magenta
-   Color_Final      : constant String := ESC & "[1;36m"; -- cian brillante
+   Color_Ordenie    : constant String := ESC & "[33m";    -- amarillo
+   Color_Vacunacion : constant String := ESC & "[34m";    -- azul
+   Color_Camion1    : constant String := ESC & "[32m";    -- verde
+   Color_Camion2    : constant String := ESC & "[35m";    -- magenta
+   Color_Final      : constant String := ESC & "[1;36m";  -- cian brillante
 
    function Etiqueta_Vaca (Id : Id_Vaca) return String is
    begin
@@ -44,16 +43,16 @@ procedure Tambo is
       Color   : constant String :=
         (case Evento is
             when Evento_Ordenie      => Color_Ordenie,
-            when Evento_Vacunacion  => Color_Vacunacion,
-            when Evento_Camion1     => Color_Camion1,
-            when Evento_Camion2     => Color_Camion2);
+            when Evento_Vacunacion   => Color_Vacunacion,
+            when Evento_Camion1      => Color_Camion1,
+            when Evento_Camion2      => Color_Camion2);
 
       Prefijo : constant String :=
         (case Evento is
             when Evento_Ordenie      => "[ORDENIE] ",
-            when Evento_Vacunacion  => "[VACUNACION] ",
-            when Evento_Camion1     => "[CAMION 1] ",
-            when Evento_Camion2     => "[CAMION 2] ");
+            when Evento_Vacunacion   => "[VACUNACION] ",
+            when Evento_Camion1      => "[CAMION 1] ",
+            when Evento_Camion2      => "[CAMION 2] ");
    begin
       Put_Line
         (Color &
@@ -63,33 +62,36 @@ procedure Tambo is
    end Imprimir_Mensaje;
 
    -------------------------------------------------
-   --  SERVIDOR: SALA DE ORDENIE (CAPACIDAD 15)
+   --  TASKS SERVIDORAS
    -------------------------------------------------
    task Sala_Ordenie is
-      entry Entrar (Id : Id_Vaca);  -- entra a la sala de ordenie
-      entry Salir  (Id : Id_Vaca);  -- sale de la sala de ordenie
+      entry Entrar (Id : Id_Vaca);
+      entry Salir  (Id : Id_Vaca);
    end Sala_Ordenie;
 
-   -------------------------------------------------
-   --  SERVIDOR: AREA DE VACUNACION
-   --  - Hasta 5 vacas en las mangas
-   --  - La task garantiza que solo una operacion
-   --    (Entrar/Salir) usa el "pasillo" a la vez
-   -------------------------------------------------
    task Area_Vacunacion is
-      entry Entrar (Id : Id_Vaca);  -- entra al area de vacunacion
-      entry Salir  (Id : Id_Vaca);  -- sale del area de vacunacion
+      entry Entrar (Id : Id_Vaca);  -- reserva lugar en alguna manga (max 5)
+      entry Salir  (Id : Id_Vaca);  -- libera lugar en las mangas
    end Area_Vacunacion;
 
-   -------------------------------------------------
-   --  SERVIDOR: CAMIONES (2 CAMIONES DE 50 VACAS)
-   -------------------------------------------------
    task Gestion_Camiones is
       entry Subir (Id : Id_Vaca);
    end Gestion_Camiones;
 
    -------------------------------------------------
-   --  FUNCION AUXILIAR PARA TIEMPOS RANDOM (0 .. Max_Segundos)
+   --  SEMAFORO BINARIO PARA EL PASILLO
+   -------------------------------------------------
+   --  Representa el pasillo compartido de entrada/salida.
+   --  Solo una vaca puede usarlo a la vez.
+   task type Semaforo_Binario is
+      entry P;   -- wait
+      entry V;   -- signal
+   end Semaforo_Binario;
+
+   Pasillo_Vacunacion : Semaforo_Binario;
+
+   -------------------------------------------------
+   --  FUNCION AUXILIAR PARA TIEMPOS RANDOM
    -------------------------------------------------
    function Duracion_Aleatoria
      (Gen : in out Random_Duracion.Generator;
@@ -106,14 +108,35 @@ procedure Tambo is
    procedure Ordenar (Id : Id_Vaca; Gen : in out Random_Duracion.Generator) is
    begin
       Sala_Ordenie.Entrar (Id);
-      delay Duracion_Aleatoria (Gen, 3);  -- hasta 3 segundos ordenandose
+      delay Duracion_Aleatoria (Gen, 3);  -- hasta 3 segundos ordeñandose
       Sala_Ordenie.Salir (Id);
    end Ordenar;
 
    procedure Vacunar (Id : Id_Vaca; Gen : in out Random_Duracion.Generator) is
    begin
+      -- 1) Reservar lugar en el área de vacunación (max 5 vacas)
       Area_Vacunacion.Entrar (Id);
-      delay Duracion_Aleatoria (Gen, 2);  -- hasta 2 segundos vacunandose
+
+      -- 2) Usar el pasillo para ENTRAR (semaforo binario)
+      Pasillo_Vacunacion.P;
+      Imprimir_Mensaje
+        ("esta usando el pasillo para entrar al area de vacunacion",
+         Id,
+         Evento_Vacunacion);
+      Pasillo_Vacunacion.V;
+
+      -- 3) Tiempo de vacunacion (en la manga)
+      delay Duracion_Aleatoria (Gen, 2);
+
+      -- 4) Usar el mismo pasillo para SALIR
+      Pasillo_Vacunacion.P;
+      Imprimir_Mensaje
+        ("esta usando el pasillo para salir del area de vacunacion",
+         Id,
+         Evento_Vacunacion);
+      Pasillo_Vacunacion.V;
+
+      -- 5) Liberar lugar en el area (sale de la manga)
       Area_Vacunacion.Salir (Id);
    end Vacunar;
 
@@ -135,11 +158,9 @@ procedure Tambo is
          Mi_Id := Id;
       end Comenzar;
 
-      -- Inicializamos generadores de random usando el Id como semilla
       Random_Eleccion.Reset (Generador_Eleccion, Integer (Mi_Id));
       Random_Duracion.Reset (Generador_Duracion, Integer (Mi_Id) * 13 + 7);
 
-      -- Decide aleatoriamente si se vacuna primero u ordena primero
       Vacuna_Primero := Random_Eleccion.Random (Generador_Eleccion);
 
       if Vacuna_Primero then
@@ -150,7 +171,6 @@ procedure Tambo is
          Vacunar (Mi_Id, Generador_Duracion);
       end if;
 
-      -- Luego sube a algun camion
       Gestion_Camiones.Subir (Mi_Id);
    end Tarea_Vaca;
 
@@ -160,27 +180,55 @@ procedure Tambo is
    Vacas : array (Id_Vaca) of Tarea_Vaca;
 
    -------------------------------------------------
+   --  CUERPO DEL SEMAFORO BINARIO
+   -------------------------------------------------
+   task body Semaforo_Binario is
+      Libre : Boolean := True;
+   begin
+      loop
+         select
+            -- P: solo se acepta si el semaforo esta libre
+            when Libre =>
+               accept P do
+                  Libre := False;
+               end P;
+
+         or
+            -- V: siempre se puede llamar, vuelve a dejarlo libre
+            accept V do
+               Libre := True;
+            end V;
+
+         end select;
+      end loop;
+   end Semaforo_Binario;
+
+   -------------------------------------------------
    --  CUERPOS DE LAS TASK SERVIDORAS
    -------------------------------------------------
 
-   -- Sala de ordenie: como un "monitor" con capacidad 15
+   -- Sala de ordenie: monitor con capacidad 15
    task body Sala_Ordenie is
       Ocupadas : Natural := 0;
    begin
       loop
          select
-            -- Dejo entrar solo si hay lugar
             when Ocupadas < Capacidad_Ordenie =>
                accept Entrar (Id : Id_Vaca) do
                   Ocupadas := Ocupadas + 1;
-                  Imprimir_Mensaje ("esta entrando al area de ordenie", Id, Evento_Ordenie);
+                  Imprimir_Mensaje
+                    ("esta entrando al area de ordenie",
+                     Id,
+                     Evento_Ordenie);
                end Entrar;
 
          or
-            -- Dejo salir solo si hay alguna vaca adentro
             when Ocupadas > 0 =>
                accept Salir (Id : Id_Vaca) do
-                  Imprimir_Mensaje ("esta saliendo del area de ordenie", Id, Evento_Ordenie);
+                  Imprimir_Mensaje
+                    ("esta saliendo del area de ordenie",
+                     Id,
+                     Evento_Ordenie);
                   Ocupadas := Ocupadas - 1;
                end Salir;
 
@@ -189,25 +237,28 @@ procedure Tambo is
    end Sala_Ordenie;
 
    -- Area de vacunacion:
-   --   * Cantidad_Adentro <= 5
-   --   * La task garantiza un unico "pasillo" para entrar/salir
+   -- * Controla que haya como maximo 5 vacas en las mangas.
    task body Area_Vacunacion is
       Cantidad_Adentro : Natural := 0;
    begin
       loop
          select
-            -- Entrar: hay lugar en alguna de las 5 mangas
             when Cantidad_Adentro < Capacidad_Vacunacion =>
                accept Entrar (Id : Id_Vaca) do
                   Cantidad_Adentro := Cantidad_Adentro + 1;
-                  Imprimir_Mensaje ("esta entrando al area de vacunacion", Id, Evento_Vacunacion);
+                  Imprimir_Mensaje
+                    ("esta entrando al area de vacunacion",
+                     Id,
+                     Evento_Vacunacion);
                end Entrar;
 
          or
-            -- Salir: solo si hay vacas adentro
             when Cantidad_Adentro > 0 =>
                accept Salir (Id : Id_Vaca) do
-                  Imprimir_Mensaje ("esta saliendo del area de vacunacion", Id, Evento_Vacunacion);
+                  Imprimir_Mensaje
+                    ("esta saliendo del area de vacunacion",
+                     Id,
+                     Evento_Vacunacion);
                   Cantidad_Adentro := Cantidad_Adentro - 1;
                end Salir;
 
@@ -216,7 +267,7 @@ procedure Tambo is
    end Area_Vacunacion;
 
    -- Gestion de camiones:
-   -- Se llenan primero el camion 1 y luego el camion 2
+   -- Se llena primero el camion 1 y luego el camion 2
    task body Gestion_Camiones is
       Cant_Camion1 : Natural := 0;
       Cant_Camion2 : Natural := 0;
@@ -228,13 +279,18 @@ procedure Tambo is
                accept Subir (Id : Id_Vaca) do
                   if Cant_Camion1 < Capacidad_Camion then
                      Cant_Camion1 := Cant_Camion1 + 1;
-                     Imprimir_Mensaje ("esta entrando al Camion 1", Id, Evento_Camion1);
+                     Imprimir_Mensaje
+                       ("esta entrando al Camion 1",
+                        Id,
+                        Evento_Camion1);
                   else
                      Cant_Camion2 := Cant_Camion2 + 1;
-                     Imprimir_Mensaje ("esta entrando al Camion 2", Id, Evento_Camion2);
+                     Imprimir_Mensaje
+                       ("esta entrando al Camion 2",
+                        Id,
+                        Evento_Camion2);
                   end if;
 
-                  -- Si ambos camiones estan llenos, aviso fin de simulacion
                   if Cant_Camion1 = Capacidad_Camion
                     and then Cant_Camion2 = Capacidad_Camion
                   then
@@ -259,7 +315,5 @@ begin
       Vacas (I).Comenzar (I);
    end loop;
 
-   -- El main termina aqui; el programa sigue ejecutando
-   -- hasta que todas las tareas (todas las vacas) finalicen.
    null;
 end Tambo;
