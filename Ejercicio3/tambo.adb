@@ -6,9 +6,6 @@ with Ada.Characters.Latin_1;    use Ada.Characters.Latin_1;
 
 procedure Tambo is
 
-   -------------------------------------------------
-   -- TIPOS Y CONSTANTES
-   -------------------------------------------------
    subtype Id_Vaca is Positive range 1 .. 100;
 
    package Random_Duracion renames Ada.Numerics.Float_Random;
@@ -18,9 +15,6 @@ procedure Tambo is
    Capacidad_Vacunacion  : constant Natural := 5;
    Capacidad_Camion      : constant Natural := 50;
 
-   -------------------------------------------------
-   -- COLORES
-   -------------------------------------------------
    Color_Reset      : constant String := ESC & "[0m";
    Color_Ordenie    : constant String := ESC & "[33m";
    Color_Vacunacion : constant String := ESC & "[34m";
@@ -31,9 +25,6 @@ procedure Tambo is
    type Tipo_Evento is
      (Evento_Ordenie, Evento_Vacunacion, Evento_Camion1, Evento_Camion2);
 
-   -------------------------------------------------
-   -- IMPRESIÓN
-   -------------------------------------------------
    function Etiqueta_Vaca (Id : Id_Vaca) return String is
    begin
       return Trim (Integer'Image (Integer (Id)), Ada.Strings.Left);
@@ -59,9 +50,6 @@ procedure Tambo is
                  Color_Reset);
    end Imprimir_Mensaje;
 
-   -------------------------------------------------------------
-   -- SEMÁFORO BINARIO IMPLEMENTADO COMO TASK
-   -------------------------------------------------------------
    task type Semaforo_Binario is
       entry P;
       entry V;
@@ -86,9 +74,6 @@ procedure Tambo is
       end loop;
    end Semaforo_Binario;
 
-   -------------------------------------------------------------
-   -- SEMÁFORO DE CONTEO (Para las 5 mangas)
-   -------------------------------------------------------------
    task type Semaforo_Conteo (Max : Positive) is
       entry P;
       entry V;
@@ -113,13 +98,9 @@ procedure Tambo is
       end loop;
    end Semaforo_Conteo;
 
-   -- Instancias concretas
    Sem_Pasillo : Semaforo_Binario;
    Sem_Mangas  : Semaforo_Conteo (Capacidad_Vacunacion);
 
-   -------------------------------------------------
-   -- TASK: SALA DE ORDENIE
-   -------------------------------------------------
    task Sala_Ordenie is
       entry Entrar (Id : Id_Vaca);
       entry Salir  (Id : Id_Vaca);
@@ -150,9 +131,6 @@ procedure Tambo is
    end Sala_Ordenie;
 
 
-   -------------------------------------------------
-   -- TASK: GESTIÓN DE CAMIONES
-   -------------------------------------------------
    task Gestion_Camiones is
       entry Subir (Id : Id_Vaca);
    end Gestion_Camiones;
@@ -193,9 +171,6 @@ procedure Tambo is
       end loop;
    end Gestion_Camiones;
 
-   -------------------------------------------------
-   -- TIEMPO RANDOM
-   -------------------------------------------------
    function Duracion_Aleatoria
      (Gen : in out Random_Duracion.Generator;
       Max_Segundos : Positive)
@@ -205,9 +180,6 @@ procedure Tambo is
       return Duration(Random_Duracion.Random(Gen) * Float(Max_Segundos));
    end Duracion_Aleatoria;
 
-   -------------------------------------------------
-   -- ORDENAR & VACUNAR
-   -------------------------------------------------
    procedure Ordenar (Id : Id_Vaca; Gen : in out Random_Duracion.Generator) is
    begin
       Sala_Ordenie.Entrar(Id);
@@ -217,10 +189,8 @@ procedure Tambo is
 
    procedure Vacunar (Id : Id_Vaca; Gen : in out Random_Duracion.Generator) is
    begin
-      -- 1) Esperar manga disponible
       Sem_Mangas.P;
 
-      -- 2) PASILLO: ENTRAR
       Sem_Pasillo.P;
       Imprimir_Mensaje("esta usando el PASILLO para ENTRAR al area de vacunacion",
                        Id, Evento_Vacunacion);
@@ -229,10 +199,8 @@ procedure Tambo is
       Imprimir_Mensaje("esta entrando a una de las mangas del area de vacunacion",
                        Id, Evento_Vacunacion);
 
-      -- 3) Tiempo de vacunación
       delay Duracion_Aleatoria(Gen, 2);
 
-      -- 4) PASILLO: SALIR
       Sem_Pasillo.P;
       Imprimir_Mensaje("esta usando el PASILLO para SALIR del area de vacunacion",
                        Id, Evento_Vacunacion);
@@ -241,13 +209,9 @@ procedure Tambo is
       Imprimir_Mensaje("esta saliendo de una manga del area de vacunacion",
                        Id, Evento_Vacunacion);
 
-      -- 5) Liberar manga
       Sem_Mangas.V;
    end Vacunar;
 
-   -------------------------------------------------
-   -- TAREA DE CADA VACA
-   -------------------------------------------------
    task type Tarea_Vaca is
       entry Comenzar (Id : Id_Vaca);
    end Tarea_Vaca;
@@ -287,3 +251,4 @@ begin
 
    null;
 end Tambo;
+
