@@ -5,11 +5,12 @@
 #include <unistd.h>
 #include <time.h>
 
-#define NUM_PASAJEROS 100
-#define NUM_OFICINISTAS 5
+#define NUM_PASAJEROS         100
+#define NUM_OFICINISTAS       5
 #define CAMBIOS_POR_OFICINISTA 3
-#define MAX_DELAY_OFICINISTA 5
-#define MAX_DELAY_
+#define MAX_DELAY_OFICINISTA  5
+#define MAX_DELAY_PASAJERO    3
+
 sem_t mutex;
 sem_t escritura;
 sem_t cola;
@@ -23,29 +24,44 @@ typedef struct {
 PanelVuelos panel;
 
 void inicializar_panel(void) {
-    snprintf(panel.info, sizeof(panel.info), "Panel inicializado con información de vuelos");
+    snprintf(panel.info, sizeof(panel.info),
+             "Panel inicializado con información de vuelos");
+}
+
+static void delay_pasajero_aleatorio(void) {
+    int ms = rand() % (MAX_DELAY_PASAJERO * 1000);
+    usleep(ms * 1000);
+}
+
+static void delay_oficinista_aleatorio(void) {
+    int ms = rand() % (MAX_DELAY_OFICINISTA * 1000);
+    usleep(ms * 1000);
 }
 
 void* pasajero(void* arg) {
     int id = *((int*)arg);
     free(arg);
 
-    usleep(1000 * (200 + rand() % 600));
+    delay_pasajero_aleatorio();
 
     sem_wait(&cola);
     sem_post(&cola);
 
     sem_wait(&mutex);
     lectores_activos++;
-    if (lectores_activos == 1) sem_wait(&escritura);
+    if (lectores_activos == 1) {
+        sem_wait(&escritura);
+    }
     sem_post(&mutex);
 
-    printf("🔵 Pasajero %d está mirando el cartel\n", id);
-    usleep(1000 * (200 + rand() % 600));
+    printf("🔵 Pasajero %d está mirando el cartel: %s\n", id, panel.info);
+    delay_pasajero_aleatorio();
 
     sem_wait(&mutex);
     lectores_activos--;
-    if (lectores_activos == 0) sem_post(&escritura);
+    if (lectores_activos == 0) {
+        sem_post(&escritura);
+    }
     sem_post(&mutex);
 
     return NULL;
@@ -56,28 +72,28 @@ void* oficinista(void* arg) {
     free(arg);
 
     for (int cambio = 1; cambio <= CAMBIOS_POR_OFICINISTA; cambio++) {
-        usleep(1000 * (300 + rand() % 900));
+        delay_oficinista_aleatorio();
 
         sem_wait(&cola);
         sem_wait(&escritura);
 
         printf("🔴 Oficinista %d está modificando el cartel (cambio %d/%d)\n",
                id, cambio, CAMBIOS_POR_OFICINISTA);
-        usleep(1000 * (300 + rand() % 900));
+        delay_oficinista_aleatorio();
 
         snprintf(panel.info, sizeof(panel.info),
                  "Actualización realizada por Oficinista %d (cambio %d)",
                  id, cambio);
-        printf("   ✓ Oficinista %d completó el cambio %d/%d\n", id, cambio, CAMBIOS_POR_OFICINISTA);
+        printf("   ✓ Oficinista %d completó el cambio %d/%d\n",
+               id, cambio, CAMBIOS_POR_OFICINISTA);
 
         sem_post(&escritura);
         sem_post(&cola);
 
-        usleep(1000 * 100);
+        usleep(100 * 1000);
     }
     return NULL;
 }
-
 
 int main(void) {
     pthread_t pasajeros[NUM_PASAJEROS];
@@ -89,23 +105,20 @@ int main(void) {
     sem_init(&escritura, 0, 1);
     sem_init(&cola, 0, 1);
 
-
     inicializar_panel();
 
     printf("═══════════════════════════════════════════════════════\n");
     printf("  SISTEMA DE PANEL DE VUELOS - AEROPUERTO INTERNACIONAL\n");
     printf("═══════════════════════════════════════════════════════\n");
-    printf("  Pasajeros: %d | Oficinistas: %d\n", NUM_PASAJEROS, NUM_OFICINISTAS);
+    printf("  Pasajeros: %d | Oficinistas: %d\n",
+           NUM_PASAJEROS, NUM_OFICINISTAS);
     printf("  Cambios por oficinista: %d\n", CAMBIOS_POR_OFICINISTA);
     printf("═══════════════════════════════════════════════════════\n\n");
 
-    int pasajero_idx = 0;
-    int oficinista_idx = 0;
-    
     printf("Iniciando sistema...\n\n");
-    
+
     for (int i = 0; i < NUM_OFICINISTAS; i++) {
-        int* id = (int*)malloc(sizeof(int));
+        int* id = malloc(sizeof(int));
         if (!id) { perror("malloc oficinista"); exit(EXIT_FAILURE); }
         *id = i + 1;
         if (pthread_create(&oficinistas[i], NULL, oficinista, id) != 0) {
@@ -113,9 +126,9 @@ int main(void) {
             exit(EXIT_FAILURE);
         }
     }
-    
+
     for (int i = 0; i < NUM_PASAJEROS; i++) {
-        int* id = (int*)malloc(sizeof(int));
+        int* id = malloc(sizeof(int));
         if (!id) { perror("malloc pasajero"); exit(EXIT_FAILURE); }
         *id = i + 1;
         if (pthread_create(&pasajeros[i], NULL, pasajero, id) != 0) {
@@ -137,6 +150,7 @@ int main(void) {
 
     sem_destroy(&mutex);
     sem_destroy(&escritura);
+    sem_destroy(&cola);
 
     printf("\n═══════════════════════════════════════════════════════\n");
     printf("  TODAS LAS OPERACIONES COMPLETADAS EXITOSAMENTE\n");
